@@ -32,7 +32,7 @@ spec:
           sources:
             - serviceAccountToken:
                 path: sample-app-client-token
-                audience: aio-mq-sample-app
+                audience: aio-mq
                 expirationSeconds: 86400
 
       # Certificate chain for Dapr to validate the MQTT broker

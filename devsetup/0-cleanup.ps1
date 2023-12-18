@@ -31,8 +31,8 @@ k3d registry create devregistry.localhost  --port 5500
 k3d cluster create devcluster --registry-use k3d-devregistry.localhost:5500 -i ghcr.io/jlian/k3d-nfs:v1.25.3-k3s1 --env 'K3D_FIX_MOUNTS=1@server:*' `
 -p '1883:1883@loadbalancer' `
 -p '8883:8883@loadbalancer' `
--p '6001:6001@loadbalancer' `
--p '4000:80@loadbalancer'
+-p '4000:80@loadbalancer' `
+-p '5111:5111@loadbalancer'
 
 Write-Host "Installing Dapr on cluster" -foregroundcolor DarkGreen
 Start-Sleep -Seconds 15 # wait for cluster to be ready
