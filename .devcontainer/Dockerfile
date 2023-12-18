@@ -1,3 +1,4 @@
+# This sample Dockerfile is based on the following sample: https://github.com/Azure-Samples/explore-iot-operations
 FROM mcr.microsoft.com/devcontainers/universal:2-linux
 
 # Install mosquitto client

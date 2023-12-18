@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# This sample dev container is based on the following sample: https://github.com/Azure-Samples/explore-iot-operations
+
 set -o errexit
 set -o nounset
 set -o pipefail
