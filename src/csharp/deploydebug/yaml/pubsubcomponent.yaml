@@ -1,0 +1,20 @@
+# Pub/sub component
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: aio-mq-pubsub
+spec:
+  type: pubsub.aio-mq-pubsub-pluggable # DO NOT CHANGE
+  version: v1
+  metadata:
+  - name: url
+    # The URL of the MQTT broker, assumes default namespace for AIO
+    value: "aio-mq-dmqtt-frontend.azure-iot-operations.svc.cluster.local:8883"
+  - name: satTokenPath
+    value: "/var/run/secrets/tokens/sample-app-client-token"
+  - name: tlsEnabled
+    value: true
+  - name: caCertPath
+    value: "/var/run/certs/aio-mq-ca-cert/ca.crt"
+  - name: logLevel
+    value: "Info"

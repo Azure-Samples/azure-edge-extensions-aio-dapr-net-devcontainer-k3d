@@ -1,0 +1,10 @@
+{
+    "cSpell.words": [
+        "Dapr"
+    ],
+    "dotnet.defaultSolution": "SamplePubSub.sln",
+    "vs-kubernetes": {
+        "vs-kubernetes.dotnet-source-file-map": "/src",
+        "vs-kubernetes.dotnet-vsdbg-path": "/root/vsdbg/vsdbg",
+     }
+}

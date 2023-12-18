@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EF392275-512D-4944-BFF2-1989E4B1DDDE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "csharp", "csharp", "{3024531D-BA8D-4061-9D45-E712AC3CC8F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SamplePubSub", "src\csharp\SamplePubSub\SamplePubSub.csproj", "{743FA0A3-B039-467F-80EF-566745084A4D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{743FA0A3-B039-467F-80EF-566745084A4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{743FA0A3-B039-467F-80EF-566745084A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{743FA0A3-B039-467F-80EF-566745084A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{743FA0A3-B039-467F-80EF-566745084A4D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3024531D-BA8D-4061-9D45-E712AC3CC8F1} = {EF392275-512D-4944-BFF2-1989E4B1DDDE}
+		{743FA0A3-B039-467F-80EF-566745084A4D} = {3024531D-BA8D-4061-9D45-E712AC3CC8F1}
+	EndGlobalSection
+EndGlobal
