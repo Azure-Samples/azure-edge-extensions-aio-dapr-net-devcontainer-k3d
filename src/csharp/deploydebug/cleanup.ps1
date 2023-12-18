@@ -13,8 +13,8 @@ param (
     [string]$Namespace = "sample-app"
 )
 
-$contents = (Get-Content $PSScriptRoot/yaml/samplepubsub.yaml) -Replace '__{container_registry}__', $ContainerRegistry
+$contents = (Get-Content $PSScriptRoot/yaml/deployment.yaml) -Replace '__{container_registry}__', $ContainerRegistry
 $contents = $contents -replace '__{image_version}__', $Version
 
 $contents | kubectl delete -n $Namespace -f -
-kubectl apply -n $Namespace  -f $PSScriptRoot/yaml/pubsubcomponent.yaml
+kubectl delete -n $Namespace  -f $PSScriptRoot/yaml/pubsubcomponent.yaml
