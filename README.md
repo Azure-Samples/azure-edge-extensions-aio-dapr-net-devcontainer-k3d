@@ -43,36 +43,30 @@ This project framework provides the following features:
 * Login into your Azure tenant and set a default subscription
 
 ```powershell
- 
 az login # optionally add --tenant "<tenant_id>"
 az account set --subscription "mysubscription_name_or_id"
 az account show
-
 ```
 
 * Run the following script to connect the K3D Kubernetes cluster to Azure Arc, and enter your choice of cluster name, resource group and location. Ensure that for the parameter `Location` you use one of the [supported regions](https://learn.microsoft.com/en-us/azure/iot-operations/get-started/quickstart-deploy?tabs=linux)
 
 ```powershell
- 
  ./devsetup/1-arc.ps1 -ClusterName <cluster_name> -ResourceGroupName <resource_group_name> -Location <location>
 
  # For example:
  # ./devsetup/1-arc.ps1 -ClusterName arck-myrun-039878 -ResourceGroupName rg-myrun-039878 -Location northeurope
-
 ```
 
 * Provision an Azure Key Vault, Key Vault CSI Driver and Azure IoT Operations with the default settings and a Simulated OPC PLC using Azure CLI `az iot ops init` command. The script also provisions an MQ non-TLS `BrokerListener` for development purposes exposed through the Kubernetes service `aio-mq-custom-svc` through use of a `Custom Resource`. Please be patient as this deployment can take more than **15 minutes**
 
 ```powershell
- 
  ./devsetup/2-aio.ps1 -ClusterName <cluster_name> -ResourceGroupName <resource_group_name> -KeyVaultName <your_key_vault_name>
 
  # For example:
  # ./devsetup/2-aio.ps1 -ClusterName arck-myrun-039878 -ResourceGroupName rg-myrun-039878 -KeyVaultName kv-myrun-039878
-
 ```
 
-* In addition to AIO default installation, this script also updates the default TLS-enabled `BrokerListener` to include additional DNS entries for MQ using Custom Resources. Because further below the sample application is deployed into its own Kubernetes namespace `sample-app`, the above script also ensures this namespace exists and the MQ TLS CA root of trust in the ConfigMap `aio-ca-trust-bundle-test-only` is copied into this new namespace
+* In addition to AIO default installation, this script also updates the default TLS-enabled `BrokerListener` to include additional DNS entries for MQ using *Custom Resources*. Because further below the sample application is deployed into its own Kubernetes namespace `sample-app`, the above script also ensures this namespace exists and the MQ TLS CA root of trust in the ConfigMap `aio-ca-trust-bundle-test-only` is copied into this new application namespace. This ensures that MQTT clients, such as the `SamplePubSub` in this repo, are able to validate the certificate chain when connecting to the MQ broker with a typical DNS entry in Kubernetes like `<APP>.<NS>.svc.cluster.local`. You can review the YAML file [listener-dns.yaml](./devsetup/yaml/listener-dns.yaml) to see the MQ broker *Custom Resource* configuration to enable this
 * This is a one-time setup and you are now ready to develop your custom modules and debug them on the cluster using VS Code Kubernetes Tools
 
 ## Demo: Debugging C# Sample PubSub with Dapr Pluggable Component to AIO MQTT Broker
@@ -110,7 +104,6 @@ Several scripts allow you to automate the process, all of which can be found in 
         kubectl get pod -n sample-app | Select-String "samplepubsub"
 
         samplepubsub-544d879c58-bfr8z                   3/3     Running   0               17s
-        
         ```
 
 4. Now that the application is running you can debug it by using the Debug Launcher. The configuration is already done and can be reviewed in `.vscode/settings.json` and `.vscode/launch.json` files.
