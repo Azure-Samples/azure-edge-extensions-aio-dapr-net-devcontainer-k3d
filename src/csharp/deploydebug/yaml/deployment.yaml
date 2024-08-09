@@ -1,37 +1,40 @@
-
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dapr-client
+  namespace: azure-iot-operations
+  annotations:
+    aio-mq-broker-auth/group: dapr-workload
+---    
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: samplepubsub
+  name: mq-sample-app
+  namespace: azure-iot-operations
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      app: samplepubsub
+      app: mq-sample-app
   template:
     metadata:
       labels:
-        app: samplepubsub
+        app: mq-sample-app
       annotations:
         dapr.io/enabled: "true"
-        dapr.io/unix-domain-socket-path: "/tmp/dapr-components-sockets"
-        dapr.io/app-id: "samplepubsub"
+        dapr.io/inject-pluggable-components: "true"
+        dapr.io/app-id: "mq-sample-app"
         dapr.io/app-port: "5111"
         dapr.io/app-protocol: "http"
-        dapr.io/sidecar-liveness-probe-delay-seconds: "10"
-        dapr.io/sidecar-readiness-probe-delay-seconds: "1"
-        dapr.io/sidecar-readiness-probe-timeout-seconds: "3"
     spec:
-      volumes:
-      - name: dapr-unix-domain-socket
-        emptyDir: {}
+      serviceAccountName: dapr-client
 
+      volumes:
       # SAT token used to authenticate between Dapr and the MQTT broker
-      - name: sample-app-client-token
+      - name: mqtt-client-token
         projected:
           sources:
             - serviceAccountToken:
-                path: sample-app-client-token
+                path: mqtt-client-token
                 audience: aio-mq
                 expirationSeconds: 86400
 
@@ -41,29 +44,11 @@ spec:
           name: aio-ca-trust-bundle-test-only
 
       containers:
-      # Container for the SamplePubSub C# Application 
-      - name: samplepubsub
-        image: __{container_registry}__/samplepubsub:__{image_version}__
+      - name: mq-sample-app-container
+        # image: __{container_registry}__/samplepubsub:__{image_version}__
+        image: k3d-devregistry.localhost:5500/samplepubsub:0.3
         ports:
         - containerPort: 5111
-        resources:
-          requests:
-            cpu: "0.1"
-            memory: "100Mi"
-          limits:
-            cpu: "0.5"
-            memory: "500Mi"
-
-      # Container for the Pub/sub component
-      - name: aio-mq-pubsub-pluggable
-        image: ghcr.io/azure/iot-mq-dapr-components/pubsub:latest
-        volumeMounts:
-        - name: dapr-unix-domain-socket
-          mountPath: /tmp/dapr-components-sockets
-        - name: sample-app-client-token
-          mountPath: /var/run/secrets/tokens
-        - name: aio-ca-trust-bundle
-          mountPath: /var/run/certs/aio-mq-ca-cert/
         resources:
           requests:
             cpu: "0.1"
@@ -76,11 +61,12 @@ kind: Service
 apiVersion: v1
 metadata:
   name: samplepubsub-svc
+  namespace: azure-iot-operations
   labels:
-    app: samplepubsub
+    app: mq-sample-app
 spec:
   selector:
-    app: samplepubsub
+    app: mq-sample-app
   ports:
   - protocol: TCP
     port: 5111

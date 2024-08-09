@@ -25,12 +25,10 @@ $keyVaultResourceId = $(az keyvault show -n $KeyVaultName -g $ResourceGroupName 
 
 Write-Host "Deploying AIO components"
 
-az iot ops init --cluster $ClusterName -g $ResourceGroupName --kv-id $keyVaultResourceId `
-  --mq-mode auto --simulate-plc
+az iot ops init --cluster $ClusterName -g $ResourceGroupName --kv-id $keyVaultResourceId --simulate-plc
 
 Write-Host "Configuring MQ Broker DNS additional entries and non TLS Listener"  -ForegroundColor DarkGreen
 kubectl apply -f $PSScriptRoot/yaml/listener-dns.yaml
-kubectl apply -f $PSScriptRoot/yaml/listener-non-tls.yaml
 
 Write-Host "Sample App Infra - `sample-app` namespace, CA trust configmap copy and SA creation"  -ForegroundColor DarkGreen
 kubectl create namespace sample-app --dry-run=client -o yaml | kubectl apply -f -

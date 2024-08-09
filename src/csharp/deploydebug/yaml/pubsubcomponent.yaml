@@ -1,20 +1,29 @@
-# Pub/sub component
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
-  name: aio-mq-pubsub
+  name: iotoperations-pubsub
+  namespace: azure-iot-operations
+  annotations:
+    dapr.io/component-container: >
+      {
+        "name": "iot-operations-dapr-components",
+        "image": "ghcr.io/azure/iot-operations-dapr-components:latest",
+        "volumeMounts": [
+          { "name": "mqtt-client-token", "mountPath": "/var/run/secrets/tokens" },
+          { "name": "aio-ca-trust-bundle", "mountPath": "/var/run/certs/aio-mq-ca-cert" }
+        ]
+      }
 spec:
-  type: pubsub.aio-mq-pubsub-pluggable # DO NOT CHANGE
+  type: pubsub.azure.iotoperations
   version: v1
   metadata:
-  - name: url
-    # The URL of the MQTT broker, assumes default namespace for AIO
-    value: "aio-mq-dmqtt-frontend.azure-iot-operations.svc.cluster.local:8883"
-  - name: satTokenPath
-    value: "/var/run/secrets/tokens/sample-app-client-token"
-  - name: tlsEnabled
+  - name: hostname
+    value: aio-mq-dmqtt-frontend
+  - name: tcpPort
+    value: 8883
+  - name: useTls
     value: true
-  - name: caCertPath
-    value: "/var/run/certs/aio-mq-ca-cert/ca.crt"
-  - name: logLevel
-    value: "Info"
+  - name: caFile
+    value: /var/run/certs/aio-mq-ca-cert/ca.crt
+  - name: satAuthFile
+    value: /var/run/secrets/tokens/mqtt-client-token

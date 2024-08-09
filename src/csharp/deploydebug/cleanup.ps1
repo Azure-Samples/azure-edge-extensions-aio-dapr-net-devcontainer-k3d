@@ -7,14 +7,11 @@ param (
     [string]$ContainerRegistry = "k3d-devregistry.localhost:5500",
 
     [Parameter(Mandatory=$True)]
-    [string]$Version,
-
-    [Parameter(Mandatory=$False)]
-    [string]$Namespace = "sample-app"
+    [string]$Version
 )
 
 $contents = (Get-Content $PSScriptRoot/yaml/deployment.yaml) -Replace '__{container_registry}__', $ContainerRegistry
 $contents = $contents -replace '__{image_version}__', $Version
 
-$contents | kubectl delete -n $Namespace -f -
-kubectl delete -n $Namespace  -f $PSScriptRoot/yaml/pubsubcomponent.yaml
+$contents | kubectl delete -f -
+kubectl delete -n -f $PSScriptRoot/yaml/pubsubcomponent.yaml

@@ -17,7 +17,7 @@ namespace SamplePubSub.Controllers
             _daprClient = daprClient;
         }
 
-        [Dapr.Topic(pubsubName: "aio-mq-pubsub", name: "messages")]
+        [Dapr.Topic(pubsubName: "iotoperations-pubsub", name: "messages", enableRawPayload: true)]
         [HttpPost("/messages")]
         public async Task<IActionResult> MessageReceived(SampleMessage incomingMessage)
         {
@@ -27,7 +27,7 @@ namespace SamplePubSub.Controllers
                 _logger.LogInformation($"Message content received: {incomingMessage.Content}");
 
                 // publish back to other topic "outmessages"
-                await _daprClient.PublishEventAsync("aio-mq-pubsub", "outmessages", incomingMessage);
+                await _daprClient.PublishEventAsync("iotoperations-pubsub", "outmessages", incomingMessage);
             
                 return Ok();
             }

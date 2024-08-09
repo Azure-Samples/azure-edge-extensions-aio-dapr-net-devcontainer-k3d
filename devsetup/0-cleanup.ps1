@@ -27,17 +27,15 @@ k3d registry create devregistry.localhost  --port 5500
 
 # Create k3d cluster with forwarded ports
 # Note devregistry.localhost needs to be passed into the cluster with the prefix `k3d-`
-k3d cluster create devcluster --registry-use k3d-devregistry.localhost:5500 --env 'K3D_FIX_MOUNTS=1@server:*' `
+k3d cluster create devcluster --registry-use k3d-devregistry.localhost:5500  `
 -p '1883:1883@loadbalancer' `
--p '8883:8883@loadbalancer' `
--p '4000:80@loadbalancer' `
--p '5111:5111@loadbalancer'
+-p '8883:8883@loadbalancer'
 
 Write-Host "Installing Dapr on cluster" -foregroundcolor DarkGreen
 Start-Sleep -Seconds 15 # wait for cluster to be ready
 
 helm repo add dapr https://dapr.github.io/helm-charts/
 helm repo update
-helm upgrade --install dapr dapr/dapr --version=1.11 --namespace dapr-system --create-namespace --wait
+helm upgrade --install dapr dapr/dapr --version=1.13 --namespace dapr-system --create-namespace --wait
 
 Write-Host "K3D registry and cluster created again, you can now run through Readme for installation"  -ForegroundColor DarkGreen

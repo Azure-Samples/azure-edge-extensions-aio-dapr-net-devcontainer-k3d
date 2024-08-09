@@ -1,23 +1,27 @@
-apiVersion: mq.iotoperations.azure.com/v1beta1
+apiVersion: mqttbroker.iotoperations.azure.com/v1beta1
 kind: BrokerListener
 metadata:
   name: listener
   namespace: azure-iot-operations
 spec:
-  brokerRef: broker
-  authenticationEnabled: true
-  authorizationEnabled: false
-  port: 8883
   serviceName: aio-mq-dmqtt-frontend
   serviceType: clusterIp
-  tls:
-    automatic:
-      issuerRef:
-        group: cert-manager.io
-        kind: Issuer
-        name: mq-dmqtt-frontend
-      san:
-        dns:
-        - aio-mq-dmqtt-frontend.azure-iot-operations.svc.cluster.local
-        - aio-mq-dmqtt-frontend.azure-iot-operations
-        ip: [] # empty array for now as IP is still a required field when setting `san`
+  brokerRef: broker
+  ports:
+  - port: 8883
+    protocol: Mqtt
+    authenticationRef: authn 
+    tls:
+      automatic:
+        issuerRef:
+          apiGroup: cert-manager.io
+          kind: Issuer
+          name: mq-dmqtt-frontend
+        san:
+          dns:
+          - aio-mq-dmqtt-frontend.azure-iot-operations.svc.cluster.local
+          - aio-mq-dmqtt-frontend.azure-iot-operations
+          ip: [] # empty array for now as IP is still a required field when setting `san`
+      mode: Automatic
+  - port: 1883
+    protocol: Mqtt
