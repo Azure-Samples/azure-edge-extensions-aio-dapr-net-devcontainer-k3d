@@ -1,10 +1,10 @@
 # Azure Edge Extensions AIO - Inner Developer Loop: MQ Dapr Pluggable Component .NET Sample
 
+> [!WARNING] [Azure IoT Operations](https://learn.microsoft.com/en-us/azure/iot-operations/) is currently in PREVIEW and subject to change. This sample might stop working at any time due to changes in the PREVIEW. This repo is compatible with version v0.5.0.
+
 This sample contains the setup of an inner developer loop to work with **Azure IoT Operations (AIO)** and custom application using Dapr and .NET.
 The repo is using a configuration with Visual Studio Code, Dev Container and VS Code Kubernetes Tools to allow local developer environment configuration and remote debugging of workloads.
 The sample workload is using .NET, though the same debugging experience can be achieved with other languages.
-
-> Note: [Azure IoT Operations](https://learn.microsoft.com/en-us/azure/iot-operations/) is currently in PREVIEW and subject to change. This sample might stop working at any time due to changes in the PREVIEW.
 
 ## Features
 

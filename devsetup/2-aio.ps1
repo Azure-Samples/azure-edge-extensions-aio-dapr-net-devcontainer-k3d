@@ -18,6 +18,21 @@ Param(
 
 )
 
+# AIO Preview update
+$cliPinnedVersion = "0.5.1b1" # AIO Preview version, current code compatible with this version
+# Check az iot ops extension version and upgrade to version as pinned $cliPinneVersion
+$installedVersion = $(az extension show --name azure-iot-ops --query version -o tsv)
+
+if ($null -eq $installedVersion -or $installedVersion -ne $cliPinnedVersion) {
+    Write-Output "Azure IoT Operations Preview extension is not installed or not the required version ($cliPinnedVersion) - removing and installing"
+    if ($null -ne $installedVersion) {
+        az extension remove --name azure-iot-ops
+    }
+    az extension add --name azure-iot-ops --version "$cliPinnedVersion"
+} else {
+    Write-Output "Azure IoT Operations Preview extension is installed with version $cliPinnedVersion"
+}
+
 Write-Host "Pre-requisite - Key Vault creation"
 
 az keyvault create -n $KeyVaultName -g $ResourceGroupName --enable-rbac-authorization false
